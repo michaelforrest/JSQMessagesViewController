@@ -32,6 +32,8 @@
  */
 @protocol JSQMessagesCollectionViewDataSource <UICollectionViewDataSource>
 
+-(void)collectionView:(JSQMessagesCollectionView *)collectionView didTapDeleteMenuItemAtIndexPath:(NSIndexPath*)indexPath;
+
 @required
 
 /**
@@ -142,5 +144,7 @@
  *  @see JSQMessagesCollectionViewCell.
  */
 - (NSAttributedString *)collectionView:(JSQMessagesCollectionView *)collectionView attributedTextForCellBottomLabelAtIndexPath:(NSIndexPath *)indexPath;
+
+- (UIColor *)collectionView:(JSQMessagesCollectionView *)collectionView textColorForBubbleAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

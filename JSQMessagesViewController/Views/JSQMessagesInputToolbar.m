@@ -18,15 +18,11 @@
 
 #import "JSQMessagesInputToolbar.h"
 
-#import "JSQMessagesComposerTextView.h"
-
-#import "JSQMessagesToolbarButtonFactory.h"
+#import "MSTY-Swift.h"
 
 #import "UIColor+JSQMessages.h"
 #import "UIImage+JSQMessages.h"
 #import "UIView+JSQMessages.h"
-
-const CGFloat kJSQMessagesInputToolbarHeightDefault = 44.0f;
 
 static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesInputToolbarKeyValueObservingContext;
 
@@ -47,6 +43,8 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
 
 @implementation JSQMessagesInputToolbar
 
+@dynamic delegate;
+
 #pragma mark - Initialization
 
 - (void)awakeFromNib
@@ -57,9 +55,9 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     self.jsq_isObserving = NO;
     self.sendButtonOnRight = YES;
     
-    NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([JSQMessagesToolbarContentView class]) owner:nil options:nil];
-    JSQMessagesToolbarContentView *toolbarContentView = [nibViews firstObject];
-    toolbarContentView.frame = self.frame;
+    NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:@"MessagesToolbarContentView" owner:nil options:nil];
+    MessagesToolbarContentView *toolbarContentView = [nibViews firstObject];
+
     [self addSubview:toolbarContentView];
     [self jsq_pinAllEdgesOfSubview:toolbarContentView];
     [self setNeedsUpdateConstraints];
@@ -67,8 +65,8 @@ static void * kJSQMessagesInputToolbarKeyValueObservingContext = &kJSQMessagesIn
     
     [self jsq_addObservers];
     
-    self.contentView.leftBarButtonItem = [JSQMessagesToolbarButtonFactory defaultAccessoryButtonItem];
-    self.contentView.rightBarButtonItem = [JSQMessagesToolbarButtonFactory defaultSendButtonItem];
+    self.contentView.leftBarButtonItem = [MessagesToolbarButtonFactory defaultAccessoryButtonItem];
+    self.contentView.rightBarButtonItem = [[SendButton alloc] init];
     
     [self toggleSendButtonEnabled];
 }

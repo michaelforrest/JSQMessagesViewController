@@ -19,6 +19,7 @@
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
 
 #import "JSQMessagesBubbleImageFactory.h"
+#import "UIImage+JSQMessages.h"
 
 
 @interface JSQMessagesMediaViewBubbleImageMasker ()
@@ -34,7 +35,7 @@
 
 - (instancetype)init
 {
-    return [self initWithBubbleImageFactory:[[JSQMessagesBubbleImageFactory alloc] init]];
+    return [self initWithBubbleImageFactory:[[JSQMessagesBubbleImageFactory alloc] initWithBubbleImage:[UIImage jsq_bubbleMstyImage] capInsets:UIEdgeInsetsZero]];
 }
 
 - (instancetype)initWithBubbleImageFactory:(JSQMessagesBubbleImageFactory *)bubbleImageFactory
@@ -82,7 +83,7 @@
     NSParameterAssert(image != nil);
     
     UIImageView *imageViewMask = [[UIImageView alloc] initWithImage:image];
-    imageViewMask.frame = CGRectInset(view.frame, 2.0f, 2.0f);
+    imageViewMask.frame = CGRectInset(view.bounds, 0.0f, 0.0f);
     
     view.layer.mask = imageViewMask.layer;
 }

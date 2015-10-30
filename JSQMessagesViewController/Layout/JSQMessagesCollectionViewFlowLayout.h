@@ -54,11 +54,6 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
 @interface JSQMessagesCollectionViewFlowLayout : UICollectionViewFlowLayout
 
 /**
- *  The collection view object currently using this layout object.
- */
-@property (readonly, nonatomic) JSQMessagesCollectionView *collectionView;
-
-/**
  *  Specifies whether or not the layout should enable spring behavior dynamics for its items using `UIDynamics`.
  *
  *  @discussion The default value is `NO`, which disables "springy" or "bouncy" items in the layout. 
@@ -166,13 +161,6 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault;
  *  You may use `kJSQMessagesCollectionViewAvatarSizeDefault` to size your avatars to the default value.
  */
 @property (assign, nonatomic) CGSize outgoingAvatarViewSize;
-
-/**
- *  The maximum number of items that the layout should keep in its cache of layout information.
- *
- *  @discussion The default value is `200`. A limit of `0` means no limit. This is not a strict limit.
- */
-@property (assign, nonatomic) NSUInteger cacheLimit;
 
 /**
  *  Computes and returns the size of the `messageBubbleImageView` property of a `JSQMessagesCollectionViewCell`

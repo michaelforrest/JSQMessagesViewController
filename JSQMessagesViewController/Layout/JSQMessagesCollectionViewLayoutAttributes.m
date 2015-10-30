@@ -39,6 +39,11 @@
 
 #pragma mark - Setters
 
+- (void)setJsq_size:(CGSize)jsq_size
+{
+    _jsq_size = jsq_size;
+}
+
 - (void)setMessageBubbleFont:(UIFont *)messageBubbleFont
 {
     NSParameterAssert(messageBubbleFont != nil);
@@ -148,6 +153,7 @@
     }
     
     copy.messageBubbleFont = self.messageBubbleFont;
+    copy.jsq_size = self.jsq_size;
     copy.messageBubbleContainerViewWidth = self.messageBubbleContainerViewWidth;
     copy.textViewFrameInsets = self.textViewFrameInsets;
     copy.textViewTextContainerInsets = self.textViewTextContainerInsets;

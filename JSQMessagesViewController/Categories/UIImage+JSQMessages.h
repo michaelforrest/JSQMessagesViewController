@@ -34,6 +34,8 @@
  */
 + (UIImage *)jsq_bubbleRegularImage;
 
++ (UIImage *)jsq_bubbleMstyImage;
+
 /**
  *  @return The regular message bubble image without a tail.
  */

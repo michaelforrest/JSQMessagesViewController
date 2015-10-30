@@ -21,6 +21,8 @@
 #import "JSQMessagesMediaPlaceholderView.h"
 #import "JSQMessagesMediaViewBubbleImageMasker.h"
 
+const CGFloat JSQMediaItemMargin = 20.0;
+const CGFloat JSQMSTYPreviewSize = 180.0f;
 
 @interface JSQMediaItem ()
 
@@ -44,6 +46,7 @@
     if (self) {
         _appliesMediaViewMaskAsOutgoing = maskAsOutgoing;
         _cachedPlaceholderView = nil;
+        _mediaViewDisplaySize = CGSizeMake(JSQMSTYPreviewSize, JSQMSTYPreviewSize);
     }
     return self;
 }
@@ -67,22 +70,13 @@
     return nil;
 }
 
-- (CGSize)mediaViewDisplaySize
-{
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
-        return CGSizeMake(315.0f, 225.0f);
-    }
-    
-    return CGSizeMake(210.0f, 150.0f);
-}
-
 - (UIView *)mediaPlaceholderView
 {
     if (self.cachedPlaceholderView == nil) {
         CGSize size = [self mediaViewDisplaySize];
         UIView *view = [JSQMessagesMediaPlaceholderView viewWithActivityIndicator];
         view.frame = CGRectMake(0.0f, 0.0f, size.width, size.height);
-        [JSQMessagesMediaViewBubbleImageMasker applyBubbleImageMaskToMediaView:view isOutgoing:self.appliesMediaViewMaskAsOutgoing];
+        view.layer.cornerRadius = size.height / 2;
         self.cachedPlaceholderView = view;
     }
     

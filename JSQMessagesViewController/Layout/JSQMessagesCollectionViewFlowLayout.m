@@ -76,26 +76,28 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
 - (void)jsq_configureFlowLayout
 {
     self.scrollDirection = UICollectionViewScrollDirectionVertical;
-    self.sectionInset = UIEdgeInsetsMake(10.0f, 4.0f, 10.0f, 4.0f);
-    self.minimumLineSpacing = 4.0f;
+    self.sectionInset = UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 0.0f);
     
-    _bubbleImageAssetWidth = [UIImage jsq_bubbleCompactImage].size.width;
+    self.minimumLineSpacing = 8.0f;
+    
+    _bubbleImageAssetWidth = [UIImage jsq_bubbleRegularImage].size.width;
     
     _messageBubbleCache = [NSCache new];
     _messageBubbleCache.name = @"JSQMessagesCollectionViewFlowLayout.messageBubbleCache";
-    _messageBubbleCache.countLimit = 200;
+    _messageBubbleCache.countLimit = 100;
     
-    _messageBubbleFont = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    _messageBubbleFont = [UIFont fontWithName:@"GothamRndSSm-Medium" size:14.f];
     
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
         _messageBubbleLeftRightMargin = 240.0f;
     }
     else {
-        _messageBubbleLeftRightMargin = 50.0f;
+        _messageBubbleLeftRightMargin = 90.0f;
     }
-    
-    _messageBubbleTextViewFrameInsets = UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 6.0f);
-    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(7.0f, 14.0f, 7.0f, 14.0f);
+
+                                                        // top, left, bottom, right
+    _messageBubbleTextViewFrameInsets = UIEdgeInsetsMake(2.0f, 6.0f, 2.0f, 8.0f);
+    _messageBubbleTextViewTextContainerInsets = UIEdgeInsetsMake(7.0f, 8.0f, 6.0f, 5.0f);
     
     CGSize defaultAvatarSize = CGSizeMake(kJSQMessagesCollectionViewAvatarSizeDefault, kJSQMessagesCollectionViewAvatarSizeDefault);
     _incomingAvatarViewSize = defaultAvatarSize;
@@ -221,11 +223,6 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     [self invalidateLayoutWithContext:[JSQMessagesCollectionViewFlowLayoutInvalidationContext context]];
 }
 
-- (void)setCacheLimit:(NSUInteger)cacheLimit
-{
-    self.messageBubbleCache.countLimit = cacheLimit;
-}
-
 #pragma mark - Getters
 
 - (CGFloat)itemWidth
@@ -247,11 +244,6 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
         _visibleIndexPaths = [NSMutableSet new];
     }
     return _visibleIndexPaths;
-}
-
-- (NSUInteger)cacheLimit
-{
-    return self.messageBubbleCache.countLimit;
 }
 
 #pragma mark - Notifications
@@ -333,7 +325,7 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
             [self jsq_configureMessageCellLayoutAttributes:attributesItem];
         }
         else {
-            attributesItem.zIndex = -1;
+            //attributesItem.zIndex = -1;
         }
     }];
     
@@ -427,7 +419,9 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
 
 - (CGSize)messageBubbleSizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    id<JSQMessageData> messageItem = [self.collectionView.dataSource collectionView:self.collectionView messageDataForItemAtIndexPath:indexPath];
+    JSQMessagesCollectionView *collectionView = (JSQMessagesCollectionView *)self.collectionView;
+    
+    id<JSQMessageData> messageItem = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
     
     NSValue *cachedSize = [self.messageBubbleCache objectForKey:@(messageItem.hash)];
     if (cachedSize != nil) {
@@ -438,12 +432,13 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     
     if ([messageItem isMediaMessage]) {
         finalSize = [[messageItem media] mediaViewDisplaySize];
+        finalSize.width += 5; // Margin
     }
     else {
         CGSize avatarSize = [self jsq_avatarSizeForIndexPath:indexPath];
         
         //  from the cell xibs, there is a 2 point space between avatar and bubble
-        CGFloat spacingBetweenAvatarAndBubble = 2.0f;
+        CGFloat spacingBetweenAvatarAndBubble = 0.0f;
         CGFloat horizontalContainerInsets = self.messageBubbleTextViewTextContainerInsets.left + self.messageBubbleTextViewTextContainerInsets.right;
         CGFloat horizontalFrameInsets = self.messageBubbleTextViewFrameInsets.left + self.messageBubbleTextViewFrameInsets.right;
         
@@ -462,10 +457,10 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
         
         //  add extra 2 points of space, because `boundingRectWithSize:` is slightly off
         //  not sure why. magix. (shrug) if you know, submit a PR
-        CGFloat verticalInsets = verticalContainerInsets + verticalFrameInsets + 2.0f;
+        CGFloat verticalInsets = verticalContainerInsets + verticalFrameInsets;// + 2.0f;
         
         //  same as above, an extra 2 points of magix
-        CGFloat finalWidth = MAX(stringSize.width + horizontalInsetsTotal, self.bubbleImageAssetWidth) + 2.0f;
+        CGFloat finalWidth = MAX(stringSize.width + horizontalInsetsTotal, self.bubbleImageAssetWidth);// + 2.0f;
         
         finalSize = CGSizeMake(finalWidth, stringSize.height + verticalInsets);
     }
@@ -494,6 +489,8 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     
     CGSize messageBubbleSize = [self messageBubbleSizeForItemAtIndexPath:indexPath];
     
+    layoutAttributes.jsq_size = messageBubbleSize;
+        
     layoutAttributes.messageBubbleContainerViewWidth = messageBubbleSize.width;
     
     layoutAttributes.textViewFrameInsets = self.messageBubbleTextViewFrameInsets;
@@ -506,25 +503,29 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     
     layoutAttributes.outgoingAvatarViewSize = self.outgoingAvatarViewSize;
     
-    layoutAttributes.cellTopLabelHeight = [self.collectionView.delegate collectionView:self.collectionView
-                                                                                layout:self
-                                                      heightForCellTopLabelAtIndexPath:indexPath];
+    JSQMessagesCollectionView *collectionView = (JSQMessagesCollectionView *)self.collectionView;
     
-    layoutAttributes.messageBubbleTopLabelHeight = [self.collectionView.delegate collectionView:self.collectionView
-                                                                                         layout:self
-                                                      heightForMessageBubbleTopLabelAtIndexPath:indexPath];
+    layoutAttributes.cellTopLabelHeight = [collectionView.delegate collectionView:collectionView
+                                                                           layout:self
+                                                 heightForCellTopLabelAtIndexPath:indexPath];
     
-    layoutAttributes.cellBottomLabelHeight = [self.collectionView.delegate collectionView:self.collectionView
-                                                                                   layout:self
-                                                      heightForCellBottomLabelAtIndexPath:indexPath];
+    layoutAttributes.messageBubbleTopLabelHeight = [collectionView.delegate collectionView:collectionView
+                                                                                    layout:self
+                                                 heightForMessageBubbleTopLabelAtIndexPath:indexPath];
+    
+    layoutAttributes.cellBottomLabelHeight = [collectionView.delegate collectionView:collectionView
+                                                                              layout:self
+                                                 heightForCellBottomLabelAtIndexPath:indexPath];
 }
 
 - (CGSize)jsq_avatarSizeForIndexPath:(NSIndexPath *)indexPath
 {
-    id<JSQMessageData> messageData = [self.collectionView.dataSource collectionView:self.collectionView messageDataForItemAtIndexPath:indexPath];
+    JSQMessagesCollectionView *collectionView = (JSQMessagesCollectionView *)self.collectionView;
+    
+    id<JSQMessageData> messageData = [collectionView.dataSource collectionView:collectionView messageDataForItemAtIndexPath:indexPath];
     NSString *messageSender = [messageData senderId];
    
-    if ([messageSender isEqualToString:[self.collectionView.dataSource senderId]]) {
+    if ([messageSender isEqualToString:[collectionView.dataSource senderId]]) {
         return self.outgoingAvatarViewSize;
     }
     
@@ -566,14 +567,14 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
     NSArray *behaviors = self.dynamicAnimator.behaviors;
     
     NSIndexSet *indexSet = [behaviors indexesOfObjectsPassingTest:^BOOL(UIAttachmentBehavior *springBehaviour, NSUInteger index, BOOL *stop) {
-        UICollectionViewLayoutAttributes *layoutAttributes = [springBehaviour.items firstObject];
+        UICollectionViewLayoutAttributes *layoutAttributes = (UICollectionViewLayoutAttributes *)[springBehaviour.items firstObject];
         return ![visibleItemsIndexPaths containsObject:layoutAttributes.indexPath];
     }];
     
     NSArray *behaviorsToRemove = [self.dynamicAnimator.behaviors objectsAtIndexes:indexSet];
     
     [behaviorsToRemove enumerateObjectsUsingBlock:^(UIAttachmentBehavior *springBehaviour, NSUInteger index, BOOL *stop) {
-        UICollectionViewLayoutAttributes *layoutAttributes = [springBehaviour.items firstObject];
+        UICollectionViewLayoutAttributes *layoutAttributes = (UICollectionViewLayoutAttributes *)[springBehaviour.items firstObject];
         [self.dynamicAnimator removeBehavior:springBehaviour];
         [self.visibleIndexPaths removeObject:layoutAttributes.indexPath];
     }];
@@ -581,12 +582,12 @@ const CGFloat kJSQMessagesCollectionViewAvatarSizeDefault = 30.0f;
 
 - (void)jsq_adjustSpringBehavior:(UIAttachmentBehavior *)springBehavior forTouchLocation:(CGPoint)touchLocation
 {
-    UICollectionViewLayoutAttributes *item = [springBehavior.items firstObject];
+    UICollectionViewLayoutAttributes *item = (UICollectionViewLayoutAttributes *)[springBehavior.items firstObject];
     CGPoint center = item.center;
     
     //  if touch is not (0,0) -- adjust item center "in flight"
     if (!CGPointEqualToPoint(CGPointZero, touchLocation)) {
-        CGFloat distanceFromTouch = fabsf(touchLocation.y - springBehavior.anchorPoint.y);
+        CGFloat distanceFromTouch = fabs(touchLocation.y - springBehavior.anchorPoint.y);
         CGFloat scrollResistance = distanceFromTouch / self.springResistanceFactor;
         
         if (self.latestDelta < 0.0f) {

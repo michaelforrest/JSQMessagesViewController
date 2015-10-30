@@ -16,7 +16,16 @@
 //  Released under an MIT license: http://opensource.org/licenses/MIT
 //
 
-#import <JSQSystemSoundPlayer/JSQSystemSoundPlayer.h>
+//#import <JSQSystemSoundPlayer/JSQSystemSoundPlayer.h>
+#import <Foundation/Foundation.h>
+
+@interface JSQSystemSoundPlayer : NSObject
+
+@end
+
+@implementation JSQSystemSoundPlayer
+
+@end
 
 @interface JSQSystemSoundPlayer (JSQMessages)
 

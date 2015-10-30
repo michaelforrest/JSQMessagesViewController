@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1" customClass="MessagesToolbarContentView" customModule="MSTY" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Myo-1S-Vg1" userLabel="Right button container">
+                    <rect key="frame" x="254" y="12" width="50" height="32"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.63221125710000003" green="0.90752664390000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="NaR-re-dJ4"/>
+                        <constraint firstAttribute="width" constant="50" id="yde-S9-dHe"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xj1-kS-RqF" userLabel="Text view container">
+                    <rect key="frame" x="52" y="12" width="192" height="32"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dm4-NT-mvr" customClass="MessagesComposerTextView" customModule="MSTY" customModuleProvider="target">
+                            <rect key="frame" x="6" y="0.0" width="180" height="32"/>
+                            <animations/>
+                            <color key="backgroundColor" red="0.63221125710000003" green="0.90752664390000004" blue="1" alpha="0.70000000000000007" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.99607843139999996" green="0.76078431369999999" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="PWk-ai-2UU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dm4-NT-mvr" secondAttribute="bottom" id="RSR-RJ-Nzc"/>
+                        <constraint firstAttribute="trailing" secondItem="dm4-NT-mvr" secondAttribute="trailing" constant="6" id="ZHJ-Ag-aSQ"/>
+                        <constraint firstAttribute="centerY" secondItem="dm4-NT-mvr" secondAttribute="centerY" id="cBr-Pb-9dv"/>
+                        <constraint firstAttribute="width" constant="192" placeholder="YES" id="gvd-bc-nJo"/>
+                        <constraint firstItem="dm4-NT-mvr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="xj1-kS-RqF" secondAttribute="top" id="tUa-1f-kTw"/>
+                        <constraint firstItem="dm4-NT-mvr" firstAttribute="leading" secondItem="xj1-kS-RqF" secondAttribute="leading" constant="6" id="y1H-49-9lV"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LEq-G7-jGt" userLabel="Left button container">
+                    <rect key="frame" x="0.0" y="0.0" width="52" height="56"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.63221125710000003" green="0.90752664390000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="0sE-GV-joM"/>
+                        <constraint firstAttribute="width" constant="52" id="j6k-ZN-G8r"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="xj1-kS-RqF" firstAttribute="top" secondItem="1" secondAttribute="top" constant="12" id="1LE-Su-LFL"/>
+                <constraint firstItem="xj1-kS-RqF" firstAttribute="leading" secondItem="LEq-G7-jGt" secondAttribute="trailing" id="1dC-KH-epa"/>
+                <constraint firstAttribute="bottom" secondItem="xj1-kS-RqF" secondAttribute="bottom" constant="12" id="JiW-hZ-PgF"/>
+                <constraint firstAttribute="bottom" secondItem="Myo-1S-Vg1" secondAttribute="bottom" constant="12" id="KLe-cM-Q0E"/>
+                <constraint firstItem="LEq-G7-jGt" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="LAU-fo-GJJ"/>
+                <constraint firstItem="Myo-1S-Vg1" firstAttribute="leading" secondItem="xj1-kS-RqF" secondAttribute="trailing" constant="10" id="PGK-Y3-q6E"/>
+                <constraint firstAttribute="trailing" secondItem="Myo-1S-Vg1" secondAttribute="trailing" constant="16" id="ds6-61-GNv"/>
+                <constraint firstAttribute="bottom" secondItem="LEq-G7-jGt" secondAttribute="bottom" id="oG2-YD-ZZI"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="leftBarButtonContainerView" destination="LEq-G7-jGt" id="v8v-Fl-Ifc"/>
+                <outlet property="rightBarButtonContainerView" destination="Myo-1S-Vg1" id="phP-zs-L3B"/>
+                <outlet property="rightBarButtonHeightConstraint" destination="NaR-re-dJ4" id="MaW-Wi-vZ7"/>
+                <outlet property="rightBarButtonWidthConstraint" destination="yde-S9-dHe" id="SQQ-Kb-FdY"/>
+                <outlet property="textView" destination="dm4-NT-mvr" id="z2f-V4-Jqt"/>
+                <outlet property="textViewContainer" destination="xj1-kS-RqF" id="WUa-r3-4i3"/>
+                <outlet property="textViewHeightConstraint" destination="PWk-ai-2UU" id="9h9-Q5-Ytx"/>
+            </connections>
+            <point key="canvasLocation" x="174" y="569"/>
+        </view>
+    </objects>
+</document>

@@ -20,13 +20,7 @@
 #import <UIKit/UIKit.h>
 
 @class JSQMessagesInputToolbar;
-
-#import "JSQMessagesToolbarContentView.h"
-
-/**
- *  A constant the specifies the default height for a `JSQMessagesInputToolbar`.
- */
-FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
+@class MessagesToolbarContentView;
 
 /**
  *  The `JSQMessagesInputToolbarDelegate` protocol defines methods for interacting with
@@ -72,7 +66,7 @@ FOUNDATION_EXPORT const CGFloat kJSQMessagesInputToolbarHeightDefault;
 /**
  *  Returns the content view of the toolbar. This view contains all subviews of the toolbar.
  */
-@property (weak, nonatomic, readonly) JSQMessagesToolbarContentView *contentView;
+@property (weak, nonatomic, readonly) MessagesToolbarContentView *contentView;
 
 /**
  *  A boolean value indicating whether the send button is on the right side of the toolbar or not.

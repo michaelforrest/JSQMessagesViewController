@@ -1,0 +1,6 @@
+/* Text for button to load previously sent messages */
+"Load Earlier Messages" = "이전 메시지 불러오기";
+
+/* Text for the send button on the messages view toolbar */
+"Send" = "전송";
+

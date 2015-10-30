@@ -19,8 +19,7 @@
 #import "JSQMessagesCollectionView.h"
 
 #import "JSQMessagesCollectionViewFlowLayout.h"
-#import "JSQMessagesCollectionViewCellIncoming.h"
-#import "JSQMessagesCollectionViewCellOutgoing.h"
+#import "MSTY-Swift.h"
 
 #import "JSQMessagesTypingIndicatorFooterView.h"
 #import "JSQMessagesLoadEarlierHeaderView.h"
@@ -37,6 +36,10 @@
 
 @implementation JSQMessagesCollectionView
 
+@dynamic delegate;
+@dynamic dataSource;
+@dynamic collectionViewLayout;
+
 #pragma mark - Initialization
 
 - (void)jsq_configureCollectionView
@@ -48,17 +51,17 @@
     self.alwaysBounceVertical = YES;
     self.bounces = YES;
     
-    [self registerNib:[JSQMessagesCollectionViewCellIncoming nib]
-          forCellWithReuseIdentifier:[JSQMessagesCollectionViewCellIncoming cellReuseIdentifier]];
+    [self registerNib:[MessagesCollectionViewCellIncoming nib]
+          forCellWithReuseIdentifier:[MessagesCollectionViewCellIncoming cellReuseIdentifier]];
     
-    [self registerNib:[JSQMessagesCollectionViewCellOutgoing nib]
-          forCellWithReuseIdentifier:[JSQMessagesCollectionViewCellOutgoing cellReuseIdentifier]];
+    [self registerNib:[MessagesCollectionViewCellOutgoing nib]
+          forCellWithReuseIdentifier:[MessagesCollectionViewCellOutgoing cellReuseIdentifier]];
     
-    [self registerNib:[JSQMessagesCollectionViewCellIncoming nib]
-          forCellWithReuseIdentifier:[JSQMessagesCollectionViewCellIncoming mediaCellReuseIdentifier]];
+    [self registerNib:[MessagesCollectionViewCellIncoming nib]
+          forCellWithReuseIdentifier:[MessagesCollectionViewCellIncoming mediaCellReuseIdentifier]];
     
-    [self registerNib:[JSQMessagesCollectionViewCellOutgoing nib]
-          forCellWithReuseIdentifier:[JSQMessagesCollectionViewCellOutgoing mediaCellReuseIdentifier]];
+    [self registerNib:[MessagesCollectionViewCellOutgoing nib]
+          forCellWithReuseIdentifier:[MessagesCollectionViewCellOutgoing mediaCellReuseIdentifier]];
     
     [self registerNib:[JSQMessagesTypingIndicatorFooterView nib]
           forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
@@ -164,5 +167,12 @@
             didTapCellAtIndexPath:indexPath
                     touchLocation:position];
 }
-
+-(void)messagesCollectionViewCellDidTapDeleteMenuItem:(JSQMessagesCollectionViewCell *)cell{
+    NSIndexPath *indexPath = [self indexPathForCell:cell];
+    if (indexPath == nil) {
+        return;
+    }
+    
+    [self.dataSource collectionView:self didTapDeleteMenuItemAtIndexPath: indexPath];
+}
 @end

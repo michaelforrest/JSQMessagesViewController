@@ -31,7 +31,6 @@
 *  The methods of this protocol are all optional.
 */
 @protocol JSQMessagesCollectionViewDelegateFlowLayout <UICollectionViewDelegateFlowLayout>
-
 @optional
 
 /**

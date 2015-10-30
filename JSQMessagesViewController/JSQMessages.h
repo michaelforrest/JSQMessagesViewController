@@ -19,56 +19,53 @@
 #ifndef JSQMessages_JSQMessages_h
 #define JSQMessages_JSQMessages_h
 
-#import "JSQMessagesViewController.h"
+#import "Controllers/JSQMessagesViewController.h"
 
 //  Views
-#import "JSQMessagesCollectionView.h"
-#import "JSQMessagesCollectionViewCellIncoming.h"
-#import "JSQMessagesCollectionViewCellOutgoing.h"
-#import "JSQMessagesTypingIndicatorFooterView.h"
-#import "JSQMessagesLoadEarlierHeaderView.h"
+#import "Views/JSQMessagesCollectionView.h"
+#import "Views/JSQMessagesTypingIndicatorFooterView.h"
+#import "Views/JSQMessagesLoadEarlierHeaderView.h"
 
 //  Layout
-#import "JSQMessagesCollectionViewFlowLayout.h"
-#import "JSQMessagesCollectionViewLayoutAttributes.h"
-#import "JSQMessagesCollectionViewFlowLayoutInvalidationContext.h"
+#import "Layout/JSQMessagesCollectionViewFlowLayout.h"
+#import "Layout/JSQMessagesCollectionViewLayoutAttributes.h"
+#import "Layout/JSQMessagesCollectionViewFlowLayoutInvalidationContext.h"
 
 //  Toolbar
-#import "JSQMessagesComposerTextView.h"
-#import "JSQMessagesInputToolbar.h"
-#import "JSQMessagesToolbarContentView.h"
+#import "Views/JSQMessagesInputToolbar.h"
 
 //  Model
-#import "JSQMessage.h"
+#import "Model/JSQMessage.h"
+#import "Model/JSQTextMessage.h"
+#import "Model/JSQMediaMessage.h"
 
-#import "JSQMediaItem.h"
-#import "JSQPhotoMediaItem.h"
-#import "JSQLocationMediaItem.h"
-#import "JSQVideoMediaItem.h"
+#import "Model/JSQMediaItem.h"
+#import "Model/JSQMstyMediaItem.h"
+#import "Model/JSQLocationMediaItem.h"
+#import "Model/JSQVideoMediaItem.h"
 
-#import "JSQMessagesBubbleImage.h"
-#import "JSQMessagesAvatarImage.h"
+#import "Model/JSQMessagesBubbleImage.h"
+#import "Model/JSQMessagesAvatarImage.h"
 
 //  Protocols
-#import "JSQMessageData.h"
-#import "JSQMessageMediaData.h"
-#import "JSQMessageAvatarImageDataSource.h"
-#import "JSQMessageBubbleImageDataSource.h"
-#import "JSQMessagesCollectionViewDataSource.h"
-#import "JSQMessagesCollectionViewDelegateFlowLayout.h"
+#import "Model/JSQMessageData.h"
+#import "Model/JSQMessageMediaData.h"
+#import "Model/JSQMessageAvatarImageDataSource.h"
+#import "Model/JSQMessageBubbleImageDataSource.h"
+#import "Model/JSQMessagesCollectionViewDataSource.h"
+#import "Model/JSQMessagesCollectionViewDelegateFlowLayout.h"
 
 //  Factories
-#import "JSQMessagesAvatarImageFactory.h"
-#import "JSQMessagesBubbleImageFactory.h"
-#import "JSQMessagesMediaViewBubbleImageMasker.h"
-#import "JSQMessagesTimestampFormatter.h"
-#import "JSQMessagesToolbarButtonFactory.h"
+#import "Factories/JSQMessagesAvatarImageFactory.h"
+#import "Factories/JSQMessagesBubbleImageFactory.h"
+#import "Factories/JSQMessagesMediaViewBubbleImageMasker.h"
+#import "Factories/JSQMessagesTimestampFormatter.h"
 
 //  Categories
-#import "JSQSystemSoundPlayer+JSQMessages.h"
-#import "NSString+JSQMessages.h"
-#import "UIColor+JSQMessages.h"
-#import "UIImage+JSQMessages.h"
-#import "UIView+JSQMessages.h"
+//#import "Categories/JSQSystemSoundPlayer+JSQMessages.h"
+#import "Categories/NSString+JSQMessages.h"
+#import "Categories/UIColor+JSQMessages.h"
+#import "Categories/UIImage+JSQMessages.h"
+#import "Categories/UIView+JSQMessages.h"
 
 #endif

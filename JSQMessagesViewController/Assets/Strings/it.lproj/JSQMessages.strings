@@ -1,29 +1,6 @@
-//
-//  Created by Jesse Squires
-//  http://www.jessesquires.com
-//
-//
-//  Documentation
-//  http://cocoadocs.org/docsets/JSQMessagesViewController
-//
-//
-//  GitHub
-//  https://github.com/jessesquires/JSQMessagesViewController
-//
-//
-//  License
-//  Copyright (c) 2014 Jesse Squires
-//  Released under an MIT license: http://opensource.org/licenses/MIT
-//
+/* Text for button to load previously sent messages */
+"Load Earlier Messages" = "Carica Messaggi Precedenti";
 
-//  ********************************
-//  Special thanks to the localization contributors!
-//
-//  https://github.com/jessesquires/JSQMessagesViewController/issues/237
-//  ********************************
-
-"Load Earlier Messages" = "Carica messaggi precedenti";
-
+/* Text for the send button on the messages view toolbar */
 "Send" = "Invia";
 
-"New Message" = "Nuovo Messaggio";

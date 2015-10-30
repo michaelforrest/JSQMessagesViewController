@@ -18,6 +18,9 @@
 
 #import "JSQMessageMediaData.h"
 
+extern const CGFloat JSQMediaItemMargin;
+extern const CGFloat JSQMSTYPreviewSize;
+
 /**
  *  The `JSQMediaItem` class is an abstract base class for media item model objects that represents
  *  a single media attachment for a user message. It provides some default behavior for media items,
@@ -39,6 +42,8 @@
  *  The default value is `YES`.
  */
 @property (assign, nonatomic) BOOL appliesMediaViewMaskAsOutgoing;
+
+@property (nonatomic, assign) CGSize mediaViewDisplaySize;
 
 /**
  *  Initializes and returns a media item with the specified value for maskAsOutgoing.

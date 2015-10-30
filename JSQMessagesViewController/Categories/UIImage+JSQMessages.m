@@ -55,6 +55,12 @@
     return [UIImage jsq_bubbleImageFromBundleWithName:@"bubble_regular"];
 }
 
++ (UIImage *)jsq_bubbleMstyImage
+{
+    UIImage *image = [UIImage jsq_bubbleImageFromBundleWithName:@"bubble_msty"];
+    return image;
+}
+
 + (UIImage *)jsq_bubbleRegularTaillessImage
 {
     return [UIImage jsq_bubbleImageFromBundleWithName:@"bubble_tailless"];
@@ -82,7 +88,7 @@
 
 + (UIImage *)jsq_defaultAccessoryImage
 {
-    return [UIImage jsq_bubbleImageFromBundleWithName:@"clip"];
+    return [[UIImage alloc] init]; //[UIImage jsq_bubbleImageFromBundleWithName:@"btn-msty"];
 }
 
 + (UIImage *)jsq_defaultTypingIndicatorImage

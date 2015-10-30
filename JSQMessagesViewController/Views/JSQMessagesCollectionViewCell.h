@@ -19,7 +19,7 @@
 #import <UIKit/UIKit.h>
 
 #import "JSQMessagesLabel.h"
-#import "JSQMessagesCellTextView.h"
+#import "JSQMessageMediaData.h"
 
 @class JSQMessagesCollectionViewCell;
 
@@ -60,6 +60,8 @@
  */
 - (void)messagesCollectionViewCellDidTapCell:(JSQMessagesCollectionViewCell *)cell atPosition:(CGPoint)position;
 
+-(void)messagesCollectionViewCellDidTapDeleteMenuItem:(JSQMessagesCollectionViewCell*)cell;
+
 @end
 
 
@@ -74,6 +76,8 @@
  *  @see JSQMessagesCollectionViewCellOutgoing.
  */
 @interface JSQMessagesCollectionViewCell : UICollectionViewCell
+
+@property (strong, nonatomic) id<JSQMessageMediaData> mediaData;
 
 /**
  *  The object that acts as the delegate for the cell.
@@ -103,7 +107,7 @@
  *
  *  @warning If mediaView returns a non-nil view, then this value will be `nil`.
  */
-@property (weak, nonatomic, readonly) JSQMessagesCellTextView *textView;
+@property (weak, nonatomic, readonly) UITextView *textView;
 
 /**
  *  Returns the bubble image view of the cell that is responsible for displaying message bubble images. 

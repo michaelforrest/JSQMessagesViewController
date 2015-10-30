@@ -18,13 +18,10 @@
 
 #import "JSQMessagesCollectionViewCell.h"
 
-#import "JSQMessagesCollectionViewCellIncoming.h"
-#import "JSQMessagesCollectionViewCellOutgoing.h"
+#import "MSTY-Swift.h"
 #import "JSQMessagesCollectionViewLayoutAttributes.h"
 
 #import "UIView+JSQMessages.h"
-#import "UIDevice+JSQMessages.h"
-
 
 @interface JSQMessagesCollectionViewCell ()
 
@@ -34,7 +31,9 @@
 
 @property (weak, nonatomic) IBOutlet UIView *messageBubbleContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *messageBubbleImageView;
-@property (weak, nonatomic) IBOutlet JSQMessagesCellTextView *textView;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
+@property (weak, nonatomic) IBOutlet UIView *mediaContainer;
 
 @property (weak, nonatomic) IBOutlet UIImageView *avatarImageView;
 @property (weak, nonatomic) IBOutlet UIView *avatarContainerView;
@@ -103,7 +102,7 @@
     self.avatarViewSize = CGSizeZero;
     
     self.cellTopLabel.textAlignment = NSTextAlignmentCenter;
-    self.cellTopLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+    self.cellTopLabel.font = [UIFont fontWithName:@"GothamRndSSm-Book" size:12.f];
     self.cellTopLabel.textColor = [UIColor lightGrayColor];
     
     self.messageBubbleTopLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -111,6 +110,23 @@
     
     self.cellBottomLabel.font = [UIFont systemFontOfSize:11.0f];
     self.cellBottomLabel.textColor = [UIColor lightGrayColor];
+    
+    self.textView.textColor = [UIColor colorWithWhite:0.2 alpha:1.0];
+    self.textView.editable = NO;
+    self.textView.selectable = YES;
+    self.textView.userInteractionEnabled = YES;
+    self.textView.dataDetectorTypes = UIDataDetectorTypeNone;
+    self.textView.showsHorizontalScrollIndicator = NO;
+    self.textView.showsVerticalScrollIndicator = NO;
+    self.textView.scrollEnabled = NO;
+    self.textView.backgroundColor = [UIColor clearColor];
+    self.textView.contentInset = UIEdgeInsetsZero;
+    self.textView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    self.textView.contentOffset = CGPointZero;
+    self.textView.textContainerInset = UIEdgeInsetsZero;
+    self.textView.textContainer.lineFragmentPadding = 0;
+    self.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : [UIColor colorWithRed:0 green:116.0/255 blue:255.0/255 alpha:1],
+                                          NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid) };
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(jsq_handleTapGesture:)];
     [self addGestureRecognizer:tap];
@@ -140,14 +156,14 @@
 - (void)prepareForReuse
 {
     [super prepareForReuse];
-    
+
     self.cellTopLabel.text = nil;
     self.messageBubbleTopLabel.text = nil;
     self.cellBottomLabel.text = nil;
     
     self.textView.dataDetectorTypes = UIDataDetectorTypeNone;
-    self.textView.text = nil;
-    self.textView.attributedText = nil;
+//    self.textView.text = nil;
+//    self.textView.attributedText = nil;
     
     self.avatarImageView.image = nil;
     self.avatarImageView.highlightedImage = nil;
@@ -168,7 +184,7 @@
     }
     
     self.textViewFrameInsets = customAttributes.textViewFrameInsets;
-    
+
     [self jsq_updateConstraint:self.messageBubbleContainerWidthConstraint
                   withConstant:customAttributes.messageBubbleContainerViewWidth];
     
@@ -181,10 +197,10 @@
     [self jsq_updateConstraint:self.cellBottomLabelHeightConstraint
                   withConstant:customAttributes.cellBottomLabelHeight];
     
-    if ([self isKindOfClass:[JSQMessagesCollectionViewCellIncoming class]]) {
+    if ([self isKindOfClass:[MessagesCollectionViewCellIncoming class]]) {
         self.avatarViewSize = customAttributes.incomingAvatarViewSize;
     }
-    else if ([self isKindOfClass:[JSQMessagesCollectionViewCellOutgoing class]]) {
+    else if ([self isKindOfClass:[MessagesCollectionViewCellOutgoing class]]) {
         self.avatarViewSize = customAttributes.outgoingAvatarViewSize;
     }
 }
@@ -201,21 +217,6 @@
     self.messageBubbleImageView.highlighted = selected;
 }
 
-//  FIXME: radar 18326340
-//         remove when fixed
-//         hack for Xcode6 / iOS 8 SDK rendering bug that occurs on iOS 7.x
-//         see issue #484
-//         https://github.com/jessesquires/JSQMessagesViewController/issues/484
-//
-- (void)setBounds:(CGRect)bounds
-{
-    [super setBounds:bounds];
-    
-    if ([UIDevice jsq_isCurrentDeviceBeforeiOS8]) {
-        self.contentView.frame = bounds;
-    }
-}
-
 #pragma mark - Setters
 
 - (void)setBackgroundColor:(UIColor *)backgroundColor
@@ -230,6 +231,7 @@
     self.avatarImageView.backgroundColor = backgroundColor;
     
     self.messageBubbleContainerView.backgroundColor = backgroundColor;
+    self.mediaContainer.backgroundColor = backgroundColor;
     self.avatarContainerView.backgroundColor = backgroundColor;
 }
 
@@ -260,27 +262,26 @@
     if ([_mediaView isEqual:mediaView]) {
         return;
     }
-    
+
     [self.messageBubbleImageView removeFromSuperview];
     [self.textView removeFromSuperview];
+    self.mediaContainer.hidden = NO;
     
     [mediaView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    mediaView.frame = self.messageBubbleContainerView.bounds;
+    mediaView.frame = self.mediaContainer.bounds;
     
-    [self.messageBubbleContainerView addSubview:mediaView];
-    [self.messageBubbleContainerView jsq_pinAllEdgesOfSubview:mediaView];
+    [self.mediaContainer addSubview:mediaView];
+    [self.mediaContainer jsq_pinAllEdgesOfSubview:mediaView];
     _mediaView = mediaView;
     
     //  because of cell re-use (and caching media views, if using built-in library media item)
     //  we may have dequeued a cell with a media view and add this one on top
     //  thus, remove any additional subviews hidden behind the new media view
-    dispatch_async(dispatch_get_main_queue(), ^{
-        for (NSUInteger i = 0; i < self.messageBubbleContainerView.subviews.count; i++) {
-            if (self.messageBubbleContainerView.subviews[i] != _mediaView) {
-                [self.messageBubbleContainerView.subviews[i] removeFromSuperview];
-            }
+    for (NSUInteger i = 0; i < self.mediaContainer.subviews.count; i++) {
+        if (self.mediaContainer.subviews[i] != _mediaView) {
+            [self.mediaContainer.subviews[i] removeFromSuperview];
         }
-    });
+    }
 }
 
 #pragma mark - Getters
@@ -336,6 +337,14 @@
     }
     
     return YES;
+}
+
+#pragma mark - Menu
+-(BOOL)canPerformAction:(SEL)action withSender:(id)sender{
+    return action == @selector(delete:) || (self.mediaData == nil && action == @selector(copy:));
+}
+-(void)delete:(id)sender{
+    [self.delegate messagesCollectionViewCellDidTapDeleteMenuItem:self];
 }
 
 @end

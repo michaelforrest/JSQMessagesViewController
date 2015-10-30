@@ -24,6 +24,8 @@
  */
 @interface JSQMessagesCollectionViewLayoutAttributes : UICollectionViewLayoutAttributes <NSCopying>
 
+@property (assign, nonatomic) CGSize jsq_size;
+
 /**
  *  The font used to display the body of a text message in a message bubble within a `JSQMessagesCollectionViewCell`.
  *  This value must not be `nil`.
